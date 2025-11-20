@@ -1,0 +1,8 @@
+log_level = "debug"
+similarity_threshold = 20
+
+[telegram]
+token = "token"
+
+[database]
+url = "postgres://user:password@localhost:5432/dbname"
