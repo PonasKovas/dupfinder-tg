@@ -3,7 +3,7 @@ use anyhow::Result;
 use img_hash::HasherConfig;
 use sqlx::PgPool;
 use std::io::Cursor;
-use teloxide::{net::Download, prelude::*, sugar::request::RequestReplyExt, types::MessageId};
+use teloxide::{net::Download, prelude::*, sugar::request::RequestReplyExt};
 use tracing::{debug, error};
 
 #[derive(Clone)]
@@ -64,11 +64,13 @@ async fn message_handler(bot: Bot, msg: Message, state: BotState) -> ResponseRes
                 bot.send_message(
                     msg.chat.id,
                     format!(
-                        "closest match (dst {distance}).",
-                        distance = closest_match.distance
+                        "closest match (dst {distance}).\nhttps://t.me/c/{user_chat_id}/{original_msg}",
+                            distance = closest_match.distance,
+                            user_chat_id = convert_telegram_chat_id(chat_id), // gotta convert chat id to user facing so users can click the link
+                            original_msg = closest_match.message_id,
                     ),
                 )
-                .reply_to(MessageId(closest_match.message_id))
+                .reply_to(msg.id)
                 .await?;
 
                 Ok(())

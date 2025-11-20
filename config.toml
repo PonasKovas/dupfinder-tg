@@ -1,5 +1,5 @@
 log_level = "debug"
-similarity_threshold = 20
+similarity_threshold = 10
 
 # you can use .env file to set these env vars instead of here
 
